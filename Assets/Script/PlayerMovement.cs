@@ -16,59 +16,85 @@ namespace Platformer
         private float ySpeed;
         private bool isGrounded = false;
 
+        public float gravityScale;
+
         private CharacterController characterController;
 
         // Start is called before the first frame update
         void Start()
         {
-        characterController = GetComponent<CharacterController>();
+            characterController = GetComponent<CharacterController>();
         }
 
         // Update is called once per frame
         void Update()
         {
-            float horizontalMovement = Input.GetAxis("Horizontal");
-            float verticalMovement = Input.GetAxis("Vertical");
+            //moveDirection = new Vector3(Input.GetAxis("Horizontal") * speed, moveDirection.y, Input.GetAxis("Vertical") * speed);
 
-            moveDirection = new Vector3(horizontalMovement, 0, verticalMovement);
-            moveDirection.Normalize();
-            float magnitude = moveDirection.magnitude;
-            magnitude = Mathf.Clamp01(magnitude);
+            float yStore = moveDirection.y;
 
-            characterController.SimpleMove(moveDirection * magnitude * speed);
+            moveDirection = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
 
-            ySpeed += Physics.gravity.y * Time.deltaTime;
+            moveDirection = moveDirection.normalized * speed;
 
-            if(Input.GetButtonDown("Jump"))
+            moveDirection.y = yStore;
+
+            if(characterController.isGrounded)
             {
-                ySpeed = -0.5f;
-                isGrounded = false;
-            }
-
-            Vector3 vel = moveDirection * magnitude;
-            vel.y = ySpeed;
-            characterController.Move(vel * Time.deltaTime);
-
-            if (characterController.isGrounded)
-            {
-                ySpeed = -1.5f;
-                isGrounded = true;
+                moveDirection.y = -gravityScale;
                 if(Input.GetButtonDown("Jump"))
                 {
-                    ySpeed = jumpSpeed;
-                    isGrounded = false;
+                    moveDirection.y = jumpSpeed;
                 }
             }
+
+            moveDirection.y = moveDirection.y + (Physics.gravity.y * gravityScale * Time.deltaTime);
+            characterController.Move(moveDirection * Time.deltaTime);
+
+            //float horizontalMovement = Input.GetAxis("Horizontal");
+            //float verticalMovement = Input.GetAxis("Vertical");
+
+            //moveDirection = new Vector3(horizontalMovement, 0, verticalMovement);
+            //moveDirection.Normalize();
+            //float magnitude = moveDirection.magnitude;
+            //magnitude = Mathf.Clamp01(magnitude);
+
+            //characterController.SimpleMove(moveDirection * magnitude * speed);
+
+            //ySpeed += Physics.gravity.y * Time.deltaTime;
+
+            //if(Input.GetButtonDown("Jump"))
+            //{
+            //    ySpeed = -0.5f;
+            //    isGrounded = false;
+            //}
+
+            //Vector3 vel = moveDirection * magnitude;
+            //vel.y = ySpeed;
+            //characterController.Move(vel * Time.deltaTime);
+
+            //if (characterController.isGrounded)
+            //{
+            //    ySpeed = -1.5f;
+            //    isGrounded = true;
+            //    if(Input.GetButtonDown("Jump"))
+            //    {
+            //        ySpeed = jumpSpeed;
+            //        isGrounded = false;
+            //    }
+            //}
             
 
-            Camera.main.transform.position = transform.position + new Vector3(0, 1, -8);
+            ////Camera.main.transform.position = transform.position + new Vector3(0, 1, -8);
 
 
-            if(moveDirection != Vector3.zero)
-            {
-                Quaternion toRotate = Quaternion.LookRotation(moveDirection, Vector3.up);
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, rotSpeed * Time.deltaTime);
-            }
+            //if(moveDirection != Vector3.zero)
+            //{
+            //    Quaternion toRotate = Quaternion.LookRotation(moveDirection, Vector3.up);
+            //    transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotate, rotSpeed * Time.deltaTime);
+            //}
+
+
         }
     }
 }
