@@ -6,8 +6,34 @@ namespace Platformer
 {
     public class GameManager : MonoBehaviour
     {
+
+        #region dont touch this
+        private static GameManager _instance;
+        public static GameManager Instance
+        {
+            get
+            {
+                if (_instance is null)
+                {
+                    Debug.LogError("GameManager is NULL");
+                }
+
+                return _instance;
+            }
+        }
+
+        private void Awake()
+        {
+            _instance = this;
+        }
+        #endregion
+
         public int currentHealth;
         public int maxHealth;
+
+        public int collectableAmount;
+        public int maxCollectables;
+        public Transform collectableParent;
 
         public bool gameOver; 
         
@@ -18,30 +44,33 @@ namespace Platformer
             currentHealth = maxHealth;
 
             gameOver = false;
+
+            foreach (Transform coin in collectableParent)
+            {
+                if(coin.gameObject.GetComponent<Pickup>() != null)
+                {
+                    maxCollectables += 1;
+                }
+            }
         }
 
         // Update is called once per frame
         void Update()
         {
-        
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
         }
 
-        public void UpdateHealth(int healthUpdated)
+        public void Heal(int healValue)
         {
-            //currentHealth += healthUpdated;
+            currentHealth += healValue;
+        }
 
-            if (currentHealth+healthUpdated !> maxHealth && currentHealth < maxHealth)
+        public void Damage(int damageValue)
+        {
+            currentHealth -= damageValue;
+            if(currentHealth <= 0)
             {
-                currentHealth += healthUpdated; 
-            } 
-            else if (healthUpdated <= 0 && currentHealth == 1)
-            {
-                currentHealth += healthUpdated;
                 gameOver = true;
-            }
-            else if (healthUpdated <= 0 && currentHealth <= maxHealth)
-            {
-                currentHealth += healthUpdated;
             }
         }
     }

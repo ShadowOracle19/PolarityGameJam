@@ -19,12 +19,13 @@ namespace Platformer
             // If the player presses R it will switch the scene to the main gameplay scene and reset it
             if (Input.GetKeyDown(KeyCode.R) && SceneManager.GetActiveScene().buildIndex == 1)
             {
-                SceneManager.LoadScene(1);
+                SceneManager.LoadScene("SampleScene");
             }
             // If the player presses Escape it will return them to the main menu scene 
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
-                SceneManager.LoadScene(0);
+                Cursor.lockState = CursorLockMode.None;
+                SceneManager.LoadScene("Main Menu");
             }
         }
 
@@ -32,7 +33,7 @@ namespace Platformer
         public void StartGame()
         {
             // Change to the gameplay scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene("SampleScene");
         }
     }
 }

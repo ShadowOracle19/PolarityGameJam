@@ -12,7 +12,7 @@ namespace Platformer
         {
             if(other.tag == "Player")
             {
-                FindObjectOfType<GameManager>().UpdateHealth(healthValue);
+                GameManager.Instance.Heal(healthValue);
 
                 Destroy(gameObject);
             }
