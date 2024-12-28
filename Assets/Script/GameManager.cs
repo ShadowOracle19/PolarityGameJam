@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 namespace Platformer
@@ -34,8 +35,10 @@ namespace Platformer
         public int collectableAmount;
         public int maxCollectables;
         public Transform collectableParent;
+        public TextMeshProUGUI collectableText;
 
-        public bool gameOver; 
+        public bool gameOver;
+        public bool gameWon;
         
         // Start is called before the first frame update
         void Start()
@@ -44,6 +47,7 @@ namespace Platformer
             currentHealth = maxHealth;
 
             gameOver = false;
+            gameWon = false;
 
             foreach (Transform coin in collectableParent)
             {
@@ -58,6 +62,12 @@ namespace Platformer
         void Update()
         {
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+            collectableText.text = "Coins Collected: " + collectableAmount.ToString() + "/" + maxCollectables.ToString();
+
+            if(collectableAmount == maxCollectables)
+            {
+                gameWon = true;
+            }
         }
 
         public void Heal(int healValue)

@@ -17,6 +17,7 @@ namespace Platformer
         
         public void PickUpCoin()
         {
+            GameManager.Instance.collectableAmount += 1;
             Destroy(gameObject);
         }
     }
