@@ -8,6 +8,7 @@ namespace Platformer
     public class SceneChangeManager : MonoBehaviour
     {
         public int currentScene;
+        public GameObject pauseMenu;
         
         void Start()
         {
@@ -25,8 +26,22 @@ namespace Platformer
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Cursor.lockState = CursorLockMode.None;
-                SceneManager.LoadScene("Main Menu");
+                Time.timeScale = 0;
+                pauseMenu.transform.position = new Vector3(532.17554f, 200.6278f, 3.5227f);
+                //SceneManager.LoadScene("Main Menu");
             }
+        }
+
+        public void unpause()
+        {
+            Time.timeScale = 1;
+            pauseMenu.transform.position -= new Vector3(2000, 2000, 2000);
+        }
+
+        public void returnToMenu()
+        {
+            Time.timeScale = 1;
+            SceneManager.LoadScene("Main Menu");
         }
 
         // Switches the scene to the main gameplay scene when the button on the main menu is pressed
