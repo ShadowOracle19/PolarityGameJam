@@ -37,8 +37,6 @@ namespace Platformer
         public Transform collectableParent;
         public TextMeshProUGUI collectableText;
 
-        public TextMeshProUGUI healthText;
-
         public bool gameOver;
         public bool gameWon;
         
@@ -65,7 +63,6 @@ namespace Platformer
         {
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
             collectableText.text = "Gears Collected: \n     " + collectableAmount.ToString() + "/" + maxCollectables.ToString();
-            healthText.text = "Health:\n" + currentHealth.ToString() + "/" + maxHealth.ToString();
 
             if(collectableAmount == maxCollectables)
             {
@@ -84,7 +81,6 @@ namespace Platformer
             if(currentHealth <= 0)
             {
                 gameOver = true;
-                print("died. Sad :(");
             }
         }
     }
