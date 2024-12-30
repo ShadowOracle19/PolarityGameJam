@@ -9,7 +9,8 @@ namespace Platformer
     {
         public int currentScene;
         public GameObject pauseMenu;
-        
+        public GameManager gameManager;
+
         void Start()
         {
             currentScene = SceneManager.GetActiveScene().buildIndex;
@@ -27,15 +28,29 @@ namespace Platformer
             {
                 Cursor.lockState = CursorLockMode.None;
                 Time.timeScale = 0;
-                pauseMenu.transform.position = new Vector3(532.17554f, 200.6278f, 3.5227f);
+                pauseMenu.transform.position = new Vector3(432.17554f, 175.6278f, 3.5227f);
                 //SceneManager.LoadScene("Main Menu");
+            }
+
+            if (gameManager != null)
+            {
+                if (gameManager.gameWon)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    SceneManager.LoadScene("Win");
+                }
+                if (gameManager.gameOver)
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    SceneManager.LoadScene("Game Over");
+                }
             }
         }
 
         public void unpause()
         {
             Time.timeScale = 1;
-            pauseMenu.transform.position -= new Vector3(2000, 2000, 2000);
+            pauseMenu.transform.position = new Vector3(-2000, -2000, -2000);
         }
 
         public void returnToMenu()
