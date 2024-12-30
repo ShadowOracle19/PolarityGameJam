@@ -62,7 +62,7 @@ namespace Platformer
         void Update()
         {
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-            collectableText.text = "Coins Collected: " + collectableAmount.ToString() + "/" + maxCollectables.ToString();
+            collectableText.text = "Gears Collected: \n     " + collectableAmount.ToString() + "/" + maxCollectables.ToString();
 
             if(collectableAmount == maxCollectables)
             {
